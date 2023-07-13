@@ -1,7 +1,9 @@
 import React from "react";
 
-const TopNav = () => {
-  return <div>TopNav</div>;
+const TopNav = ({ title = "" }) => {
+  title = "sdfsdf";
+
+  return <div>TopNav {title}</div>;
 };
 
 export default TopNav;
