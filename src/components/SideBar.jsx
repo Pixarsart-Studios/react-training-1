@@ -1,19 +1,20 @@
 import React from "react";
 
-const TopNav = ({ title = "" }) => {
+const SideBar = () => {
   return (
     <div
       style={{
-        width: "100%",
+        width: "30%",
+        height: "80vh",
         padding: "5px",
-        backgroundColor: "blue",
+        backgroundColor: "green",
         color: "white",
         textAlign: "center",
       }}
     >
-      {title} TopBox
+      SideBar
     </div>
   );
 };
 
-export default TopNav;
+export default SideBar;

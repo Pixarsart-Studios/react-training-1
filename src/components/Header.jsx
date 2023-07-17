@@ -11,14 +11,6 @@ const Header = () => {
     <div>
       <TopNav title={title} />
       <MainNav />
-      <button
-        onClick={() => {
-          clickHandler("i am title");
-        }}
-      >
-        Change Title
-      </button>
-      {title} - title
     </div>
   );
 };
