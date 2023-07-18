@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
-const About = () => {
+const About = (props) => {
+  let { productId } = useParams();
+  useEffect(() => {
+    console.log("Props", props);
+  }, []);
   return (
     <Layout type="noSidebar">
       <div>
-        <div>About</div>
+        <div>About {productId} </div>
         <div>
           <NavLink
             to="/"
