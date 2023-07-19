@@ -1,71 +1,85 @@
 import React from "react";
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import Layout from "../components/Layout";
-const Home = () => (
-  <Layout type="sidebar">
-    <div>
-      <h1>Anywhere in your app!</h1>
-      <Formik
-        initialValues={{ email: "", password: "", age: "" }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(values, "onSubmit");
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-            />
-            {errors.email && touched.email && errors.email}
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-            />
-            {errors.password && touched.password && errors.password}
-            <input
-              type="text"
-              name="age"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.age}
-            />
-            {errors.age && touched.age && errors.age}
+import * as Yup from "yup";
+import api from "../api/Axios";
+import { getItem } from "localforage";
+const Home = () => {
+  const loginSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
 
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </form>
-        )}
-      </Formik>
-    </div>
-  </Layout>
-);
+    email: Yup.string().email("Invalid email").required("Required"),
+  });
+  const onSubmitHandler = async (values) => {
+    console.log(" submission", values);
+    try {
+      const data = await api.post("auth/login", values, {
+        headers: getItem(asdasdasd),
+      });
+      if (resp?.data.success) {
+        await localStorage.setItem("token", resp.data.token);
+      }
+    } catch (error) {
+      console.error("-----error-----", error?.response?.data.error);
+    }
+  };
+
+  return (
+    <Layout type="sidebar">
+      <div>
+        <h1>Anywhere in your app!</h1>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={loginSchema}
+          onSubmit={(values) => {
+            onSubmitHandler(values);
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                {" "}
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                />
+                <ErrorMessage name="email" />
+              </div>
+              <div>
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />
+                <ErrorMessage name="password" />
+              </div>
+
+              <button type="submit">Submit</button>
+            </form>
+          )}
+        </Formik>
+      </div>
+    </Layout>
+  );
+};
 
 export default Home;
