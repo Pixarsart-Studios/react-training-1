@@ -3,7 +3,7 @@ import { Formik, ErrorMessage } from "formik";
 import Layout from "../components/Layout";
 import * as Yup from "yup";
 import api from "../api/Axios";
-import { getItem } from "localforage";
+
 const Home = () => {
   const loginSchema = Yup.object().shape({
     password: Yup.string()
@@ -16,9 +16,7 @@ const Home = () => {
   const onSubmitHandler = async (values) => {
     console.log(" submission", values);
     try {
-      const data = await api.post("auth/login", values, {
-        headers: getItem(asdasdasd),
-      });
+      const resp = await api.post("auth/login", values);
       if (resp?.data.success) {
         await localStorage.setItem("token", resp.data.token);
       }
