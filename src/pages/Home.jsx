@@ -16,12 +16,12 @@ const Home = () => {
   const onSubmitHandler = async (values) => {
     console.log(" submission", values);
     try {
-      const resp = await api.post("auth/login", values);
-      if (resp?.data.success) {
-        await localStorage.setItem("token", resp.data.token);
+      const data = await api.post("auth/login", values);
+      if (data?.success) {
+        await localStorage.setItem("token", data.token);
       }
     } catch (error) {
-      console.error("-----error-----", error?.response?.data.error);
+      console.error("-----error-----", error);
     }
   };
 
